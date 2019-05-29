@@ -63,7 +63,7 @@ def getDictFromTree(tree):
             content = getDictFromTree(child)
         else:
             content = child.text
-        if ret_dict.has_key(child.tag):
+        if child.tag in ret_dict:
             if not type(ret_dict[child.tag]) == list:
                 ret_dict[child.tag] = [ret_dict[child.tag]]
             ret_dict[child.tag].append(content or "")
@@ -83,11 +83,11 @@ def decode_from_s3(string, errors = "replace"):
     """
     Convert S3 UTF-8 'string' to Unicode or raise an exception.
     """
-    if type(string) == unicode:
+    if type(string) == str:
         return string
     # Be quiet by default
     #debug("Decoding string from S3: %r" % string)
     try:
-        return unicode(string, "UTF-8", errors)
+        return str(string, "UTF-8", errors)
     except UnicodeDecodeError:
         raise UnicodeDecodeError("Conversion to unicode failed: %r" % string)
